@@ -219,7 +219,7 @@ void CLoginConn::_HandleMsgServRequest(CImPdu* pPdu)
 			min_user_cnt = pMsgServInfo->cur_conn_cnt;
 		}
 	}
-
+	// no MessageServer available
 	if (it_min_conn == g_msg_serv_info.end()) {
 		log("All TCP MsgServer are full ");
         IM::Login::IMMsgServRsp msg;
@@ -231,7 +231,8 @@ void CLoginConn::_HandleMsgServRequest(CImPdu* pPdu)
         pdu.SetSeqNum(pPdu->GetSeqNum());
         SendPdu(&pdu);
 	}
-    else
+
+    else// return a message server with minimum concurrent connection count
     {
         IM::Login::IMMsgServRsp msg;
         msg.set_result_code(::IM::BaseDefine::REFUSE_REASON_NONE);
